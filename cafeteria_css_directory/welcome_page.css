@@ -1,0 +1,73 @@
+    .heading
+    {
+    color:cyan;
+    text-align:center;
+    font-size:30px;
+    }
+    input[type==number]
+    {
+    width:100px;
+    padding:12px,20px;
+    margin:8px,0;
+    display:inline-block;
+    border:1px
+    box-sizing:border box;
+    }
+    button
+    {
+    background-color:blue;
+    color:white;
+    padding:14px,20px;
+    margin:8px 0;
+    width:10%;
+    }
+
+
+    .content
+    {
+    padding:80px;
+    color:yellow;
+    font-size:20px;
+
+    }
+
+    .image
+    {
+    background-image:url("cafeteria.jpg");
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+    height:700px;
+    position:center;
+    }
+form
+     {
+     border:3px;
+     color:green;
+     }
+     .vendor
+     {
+     padding:70px;
+     color:yellow;
+     font-size:20px;
+     }
+     .vendor_button
+    {
+     border-radius:15px;
+     button size:5px;
+     padding:30px,10px;
+     width:10%;
+
+
+    }
+
+    input[type==name]
+    {
+    width:100px;
+    padding:12px,20px;
+    margin:8px,0;
+    display:inline-block;
+    border:1px
+    box-sizing:border box;
+    }
+
