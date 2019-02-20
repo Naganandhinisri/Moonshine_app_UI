@@ -1,18 +1,19 @@
-        h1,h3
+        h1
         {
         text-align:center;
-        color:red;
+        color:navy;
         }
         *
         {
         box-sizing:border-box;
         }
-        .juices
+        .div
         {
         float:left;
-        width:25%;
+        width:35%;
         border:1px solid black;
-        margin:4px;
+        margin:400px;
+
 
         }
         button
@@ -21,7 +22,7 @@
         color:white;
         padding:14px,20px;
         margin:8px 0;
-        width:100%;
+        width:45%;
         font-size:20px;
         }
         body
@@ -34,7 +35,7 @@
         display:table;
         margin-right: 250px;
         font-size: 28px;
-        padding: 0px 10px;
+        padding: 0px 150px;
         }
         .sidebar
         {
