@@ -2,16 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FRUITS_LIST</title>
-    <link rel="stylesheet" href="../static/styles/list_of_cold_beverages.css">
+    <title>cart</title>
 </head>
 <body>
-<div class="sidebar">
-  <a href="#cart">CART ITEMS</a>
-</div>
+<div class="container">
 
+    <div class="heading">
+      <h3>CART ITEMS</h3>
 
-<div class="fruits"><h1><em>NATURFORIA</em></h1>
+    </div>
+    <div class="shopping-cart">
+      <div class="cart-buttons">
+        <a href="#0" class="button empty-cart-btn" id="item">Empty</a>
+        <a href="#0" class="button cart-checkout">Checkout - <span class="total-count">$0</span></a>
+      </div>
+    </div>
+  </div>
+div class="fruits"><h1><em>NATURFORIA</em></h1>
     <div >
       <img src="../static/images/apple_juice.jpg" width="45%" height="25%">
         <h3>APPLE JUICE</h3>
@@ -62,7 +69,12 @@
         <h3>STRAWBERRY JUICE</h3>
         <p><button>Add to cart +</button></p>
     </div>
-</div>
-
-
+<script>
+    items=[]
+    function addItem()
+    {
+    items.push(document.getElementById('item').value)
+    }
+</script>
 </body>
+
