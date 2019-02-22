@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/styles/list_of_hot_beverages.css">
+    <script src="../static/scripts/cart.js"></script>
+
+
+</head>
+<body>
+
+
+<div class="drink"><h1><em> WARM DRINKS</em></h1>
+
+    <div >
+      <img src="../static/images/tea.jpeg" width="25%">
+        <h3>TEA</h3>
+
+        <input type="button" value="Add to cart" onclick="Add_to_cart('Tea')"/>
+
+    </div>
+    <div >
+      <img src="../static/images/coffee.jpg" width="25%">
+        <h3>COFFEE</h3>
+       <input type="button" value="Add to cart" onclick="Add_to_cart('Coffee')"/>
+
+    </div>
+    <div >
+      <img src="../static/images/lemon_tea.jpg" width="25%">
+        <h3> LEMON TEA</h3>
+        <input type="button" value="Add to cart" onclick="Add_to_cart('Lemon tea')"/>
+    </div>
+    <div >
+      <img src="../static/images/green_tea.jpg" width="25%">
+        <h3>GREEN TEA</h3>
+        <input type="button" value="Add to cart" onclick="Add_to_cart('Green tea')"/>
+    </div>
+    <div >
+      <img src="../static/images/milk.jpg" width="25%">
+        <h3>MILK</h3>
+         <input type="button" id="numeric" value="Add to cart" onclick="Add_to_cart('milk')"/>
+
+
+</div>
+<div class="sidebar">
+        <a href="#cart">CART ITEMS</a>
+
+    <table>
+        <td valign="top">
+            <table cellpadding="25" cellspacing="4" border="1" id="orderedProductsTbl">
+                <thead>
+                  <tr>
+
+
+                        <td>
+                            Name
+                        </td>
+
+                       <td>
+                           Quantity
+                      </td>
+
+
+
+                    </tr>
+                </thead>
+                <tbody id="orderedProductsBody">
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" align="right" id="cart_total">
+
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </td>
+    </table>
+
+</div>
+</body>
+</html>

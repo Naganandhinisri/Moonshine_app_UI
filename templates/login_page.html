@@ -2,25 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="../static/styles/login_page.css"/>
-</head>
+    <title>app creation</title>
+    <link rel="stylesheet" href="../static/styles/welcome_page.css"/>
 <body>
-<div class="heading">
-       <h2><i>BURST YOUR THIRST</i></h2>
-       <p><h2><i>BY SELECTING ONE</i></h2></p>
+<form action="/ordering_page" method="post">
+<div class="image">
+    <div class="heading">
+        <h2><em>WELCOME TO THOUGHT WORKS</em></h2>
+        <p><h2><em> MOONSHINE</em></h2></p>
+    </div>
+
+        <div>
+            <p>For Ordering Beverages:</p>
+            <label >Kindly, Enter Your Id:</label>
+            <input type="number"  name="numeric">
+            <button type="submit">Next-></button>
+        </div>
+        <div>
+            <span>Visitors: <button type="submit">Click Here</button></span>
+
+    <div>
+          <p>Official Use:</p>
+          <label for="word">Enter your Name:</label>
+          <input type="text" id="word">
+          <button type="submit">Next</button>
+
+    </div>
+        </div>
 </div>
-<div class="img">
-    <img src="../static/images/juice.jpg" height="250"/>
-</div>
-<div class="drink">
-    <img src="../static/images/hot_drinks.jpg" height="250"/>
-</div>
-<form action="/list_of_cold_beverages">
-    <button type="submit">Click Me</button>
-</form>
-<form action="/list_of_hot_beverages">
-    <button class="coffee_button">Click Me</button>
 </form>
 </body>
 </html>
+

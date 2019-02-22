@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../static/styles/list_of_hot_beverages.css">
-    <script src="../static/scripts/cart.js"></script>
+    <script src="../static/scripts/cart2.js"></script>
 
 
 </head>
@@ -38,7 +38,8 @@
     <div >
       <img src="../static/images/milk.jpg" width="25%">
         <h3>MILK</h3>
-         <input type="button" value="Add to cart" onclick="Add_to_cart('milk')"/>
+         <input type="button" id="numeric" value="Add to cart" onclick="Add_to_cart('milk')"/>
+
 
 </div>
 <div class="sidebar">
@@ -46,18 +47,22 @@
 
     <table>
         <td valign="top">
-            <table cellpadding="25" cellspacing="4" border="1" id="orderedProductsTbl">
+            <table cellpadding="5" cellspacing="4" border="1" id="orderedProductsTbl">
                 <thead>
                   <tr>
+                      <td>
+                          <label for="NAME ID">NAME ID:</label>
+                      </td>
+                      <td>
+                         <input id="NAMEID" name="product" type="text" size="28" required/>
+                      </td>
 
 
-                        <td>
-                            Name
-                        </td>
                        <td>
                            Quantity
-
                       </td>
+
+
 
                     </tr>
                 </thead>
@@ -72,17 +77,14 @@
                     </tr>
                 </tfoot>
             </table>
-        </td>
-    </table>
-    <div class="quantity">
-      <button class="plus-btn" type="button" name="button">
-        <img src="plus.svg" alt="" />
-      </button>
-      <input type="text" name="name" value="1">
-      <button class="minus-btn" type="button" name="button">
-        <img src="minus.svg" alt="" />
-      </button>
-    </div>
-</div>
+            <input type="reset" name="reset" id="resetbtn" class="resetbtn" value="Reset" />
+    <input type="button" id="btnAddProduct" onclick="addProduct();" value="Add New Product" >
+
+<br>
+<p id="demo"></p> <br/>
+<h2> Shopping Cart </h2>
+<p id="demo2"></p>
+<h2>Grand Total:</h2>
+<p id="demo3"></p>
 </body>
 </html>

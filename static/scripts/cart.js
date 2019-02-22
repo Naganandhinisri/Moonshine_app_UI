@@ -2,7 +2,8 @@
 var shoppingCart = [];
     function displayShoppingCart(){
         var orderedProductsBody=document.getElementById("orderedProductsBody");
-        while(orderedProductsBody.rows.length>0) {
+        while(orderedProductsBody.rows.length>0)
+        {
             orderedProductsBody.deleteRow(0);
         }
         var cart_total_price=0;
@@ -10,13 +11,13 @@ var shoppingCart = [];
             var row=orderedProductsBody.insertRow();
             var cellName = row.insertCell(0);
             var cellQuantity = row.insertCell(1);
-            cellPrice.align="right";
+
             cellName.innerHTML = shoppingCart[product].Name;
             cellQuantity.innerHTML = shoppingCart[product].Quantity;
-            cart_total_price+=shoppingCart[product].Price;
+
         }
 
-        document.getElementById("cart_total").innerHTML=cart_total_price;
+
     }
 
 

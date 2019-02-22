@@ -6,7 +6,7 @@ from modules.posting_data_to_database import post_data
 
 app = Flask(__name__)
 CORS(app)
-connection = psycopg2.connect("dbname=mobile_app user=techops")
+connection = psycopg2.connect("dbname=development user=techops")
 
 
 def __init__(self, employee_id):
@@ -15,12 +15,14 @@ def __init__(self, employee_id):
 
 @app.route('/')
 def homes():
-    return render_template('welcome_page.html')
-
-
-@app.route('/login_page')
-def page2():
     return render_template('login_page.html')
+
+
+@app.route('/ordering_page', methods=["POST"])
+def page2():
+    post_data(connection, request.form)
+    return render_template('ordering_page.html')
+
 
 
 @app.route('/list_of_cold_beverages')
@@ -34,9 +36,9 @@ def page4():
 
 
 @app.route('/post-data', methods=['POST'])
-def post_user():
+def get_data():
     post_data(connection, request.form)
-    return render_template('displaying_data.html', shared=request.form)
+    return render_template('ordering_page.html', shared=request.form)
 
 
 if __name__ == '__main__':
