@@ -7,7 +7,7 @@
   z-index: 1;
   top: 0;
   right: 0;
-  background-color:bisque;
+  background-color:navy;
   padding-top: 20px;
   }
 
@@ -15,16 +15,9 @@
   {
   padding: 6px 8px 6px 16px;
   font-size: 25px;
-  color:blue;
+  color:yellow;
   display:block;
   }
-
-  .sidebar a:hover
-  {
-  color:green;
-  }
-
-
   h1
   {
    text-align:center;
@@ -34,8 +27,8 @@
    *
    {
     box-sizing:border-box;
-    color:gold;
-    border-color:yellow;
+    color:orange;
+    border-color:red;
 
 
     }
@@ -75,4 +68,37 @@
         font-size: 28px;
         padding: 0px 20px;
         }
+        .quantity {
+  padding-top: 20px;
+  margin-right: 60px;
+}
+.quantity input {
+  -webkit-appearance: none;
+  border: none;
+  text-align: center;
+  width: 32px;
+  font-size: 16px;
+  color: #43484D;
+  font-weight: 300;
+}
+
+button[class*=btn] {
+  width: 30px;
+  height: 30px;
+  background-color: #E1E8EE;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+.minus-btn img {
+  margin-bottom: 3px;
+}
+.plus-btn img {
+  margin-top: 2px;
+}
+
+button:focus,
+input:focus {
+  outline:0;
+}
 
