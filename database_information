@@ -1,0 +1,6 @@
+create database staffs;
+
+create table staff_details(counts serial unique,employee_id numeric,items varchar(20),quantity numeric,date date);
+
+insert into staff_details(employee_id) values('200'),('300'),('400'),('500'),('600'),('700'),('800'),('900'),('19535');
+
