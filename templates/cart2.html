@@ -16,13 +16,14 @@
       <img src="../static/images/tea.jpeg" width="25%">
         <h3>TEA</h3>
 
-        <input type="button" value="Add to cart" onclick="Add_to_cart('Tea')"/>
+
+        <input type="button" value="Add to cart" onclick="Add_to_cart()" id="tea"/>
 
     </div>
     <div >
       <img src="../static/images/coffee.jpg" width="25%">
         <h3>COFFEE</h3>
-       <input type="button" value="Add to cart" onclick="Add_to_cart('Coffee')"/>
+       <input type="button" value="Add to cart" onclick="Add_to_cart()" id="coffee"/>
 
     </div>
     <div >
@@ -33,7 +34,7 @@
     <div >
       <img src="../static/images/green_tea.jpg" width="25%">
         <h3>GREEN TEA</h3>
-        <input type="button" value="Add to cart" onclick="Add_to_cart('Green tea')"/>
+        <input type="button" value="Add to cart" onclick="Add_to_cart('Green tea','<input type='number',id=numeric)"/>
     </div>
     <div >
       <img src="../static/images/milk.jpg" width="25%">
@@ -47,26 +48,22 @@
 
     <table>
         <td valign="top">
-            <table cellpadding="5" cellspacing="4" border="1" id="orderedProductsTbl">
+            <table cellpadding="4" cellspacing="4" border="1" id="orderedProductsTbl">
                 <thead>
                   <tr>
                       <td>
-                          <label for="NAME ID">NAME ID:</label>
+                         Name
                       </td>
                       <td>
-                         <input id="NAMEID" name="product" type="text" size="28" required/>
+                         Quantity
                       </td>
 
-
-                       <td>
-                           Quantity
-                      </td>
 
 
 
                     </tr>
                 </thead>
-                <tbody id="orderedProductsBody">
+                <tbody id="orderedProductsTblBody">
 
                 </tbody>
                 <tfoot>
@@ -77,8 +74,6 @@
                     </tr>
                 </tfoot>
             </table>
-            <input type="reset" name="reset" id="resetbtn" class="resetbtn" value="Reset" />
-    <input type="button" id="btnAddProduct" onclick="addProduct();" value="Add New Product" >
 
 <br>
 <p id="demo"></p> <br/>
