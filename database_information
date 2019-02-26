@@ -1,14 +1,14 @@
 create database staffs;
 
-create table staff_details(counts serial unique,employee_id numeric);
+create table staff_details(counts serial unique,employee_id numeric,PRIMARY KEY(employee_id),FOREIGN KEY(employee_id) REFERENCES cold_beverages(employee_id));
 insert into staff_details(employee_id) values('200'),('300'),('400'),('500'),('600'),('700'),('800'),('900'),('19535');
 
-create table list_juices(juice_id serial unique, Available_juices varchar(30),cost numeric);
+create table list_juices(juice_id serial unique, Available_juices varchar(30),cost numeric,PRIMARY KEY(juice_id),FOREIGN KEY(juice_id) REFERENCES cold_beverages(juice_id));
 insert into list_juices(Available_juices,cost) values ('Apple Juice',70),('Banana Juice',30),('Carrot Juice',40),('Grape Juice',40),('Kiwi Juice',30),('Lemon Juice',30),('Mango Juice',40),('Orange Juice',50),('Pomegranate Juice',60)
 create table cold_beverages(counts serial unique,employee_id numeric,juice_id numeric,quantity numeric,date date);
 
 
 
-create table hot_drinks(hot_drinks_id serial unique, Available_hot_drinks varchar(30),cost numeric);
+create table hot_drinks(hot_drinks_id serial unique, Available_hot_drinks varchar(30),cost numeric,PRIMARY KEY(hot_drinks_id),FOREIGN KEY(hot_drinks_id) REFERENCES hot_beverages(hot_drinks_id)););
 insert into hot_drinks(Available_hot_drinks,cost) values ('Coffee',50),('Ginger Tea',40),('Green Tea',40),('Lemon Tea',30),('Lemon Juice',30),('Milk',40);
 create table hot_beverages(counts serial unique,employee_id numeric,hot_drinks_id numeric,quantity numeric,date date);
