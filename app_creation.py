@@ -35,15 +35,15 @@ def hello():
     items = []
     for row in table:
         items.append(row[0])
+
     return render_template("items_display.html", items=items)
 
 
 def database_connect():
     try:
         cursor = connection.cursor()
-        cursor.execute("select  Available_juices from list_juices")
+        cursor.execute("select Available_juices from list_juices")
         record = cursor.fetchall()
-
         return record
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
@@ -51,15 +51,17 @@ def database_connect():
 
 @app.route('/selected_beverages', methods=['POST'])
 def beverages():
-    selected_beverages(connection, request.form)
     return render_template('flow.html', shared=request.form)
 
 
 def selected_beverages(connection, user_data):
     cursor = connection.cursor()
-    cursor.execute(" insert into cold_beverages(employee_id) values("+user_data['numeric']+") ")
+    cursor.execute("select employee_id from cold_beverages where employee_id=%(id)s",
+                   {'id': user_data['numeric']})
     connection.commit()
     cursor.close()
+
+
 
 
 if __name__ == '__main__':
