@@ -12,6 +12,19 @@ def homes():
     return render_template('login_page.html')
 
 
+@app.route('/ordering_page', methods=['POST'])
+def get_data():
+    post_data(connection, request.form)
+    return render_template('ordering_page.html', shared=request.form)
+
+
+def post_data(connection, user_data):
+    cursor = connection.cursor()
+    cursor.execute("""insert into guest(name) values(%s);""", (user_data['name'],))
+    connection.commit()
+    cursor.close()
+
+
 def validate_data(connection, user_data):
     cursor = connection.cursor()
     cursor.execute("select employee_id from staff_details where employee_id=%(id)s",
@@ -43,6 +56,26 @@ def database_connect():
     try:
         cursor = connection.cursor()
         cursor.execute("select Available_juices from list_juices")
+        record = cursor.fetchall()
+        return record
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+
+@app.route('/available_hot_beverages', methods=['POST'])
+def hot_drinks():
+    table = connect_database()
+    items = []
+    for row in table:
+        items.append(row[0])
+
+    return render_template("hot_beverages.html", items=items)
+
+
+def connect_database():
+    try:
+        cursor = connection.cursor()
+        cursor.execute("select Available_hot_drinks from hot_drinks ")
         record = cursor.fetchall()
         return record
     except (Exception, psycopg2.Error) as error:
