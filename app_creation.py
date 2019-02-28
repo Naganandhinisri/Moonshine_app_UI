@@ -95,6 +95,31 @@ def selected_beverages(connection, user_data):
     cursor.close()
 
 
+@app.route('/vendor_page', methods=['post'])
+def show():
+    return render_template('vendor_page.html', shared=request.form)
+
+
+@app.route('/vendor_juice_world', methods=['post'])
+def vendor_details():
+    return render_template('vendor_juice_world.html', shared=request.form)
+
+
+@app.route('/report_generation', methods=['POST'])
+def check_info_vendor():
+    return validate_info_vendor(connection, request.form)
+
+
+def validate_info_vendor(connection, user_data):
+    cursor = connection.cursor()
+    cursor.execute("select vendor_id,password from vendor_details where vendor_id=%(id)s AND password=%(password)s",
+                   {'id': user_data['id'], 'password': user_data['psw']})
+    returned_rows = cursor.fetchall()
+    cursor.close()
+    if len(returned_rows) == 0:
+        return render_template('vendor_juice_world.html')
+    else:
+        return render_template('report_generation_page.html')
 
 
 if __name__ == '__main__':
