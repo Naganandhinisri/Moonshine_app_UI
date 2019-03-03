@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
-connection = psycopg2.connect("dbname=staffs user=techops")
+connection = psycopg2.connect("dbname=thoughtworks_cafeteria user=techops")
 
 
 @app.route('/')
@@ -15,7 +15,7 @@ def homes():
 @app.route('/ordering_page', methods=['POST'])
 def get_data():
     post_data(connection, request.form)
-    return render_template('ordering_page.html', shared=request.form)
+    return render_template('ordering_page.html')
 
 
 def post_data(connection, user_data):
@@ -23,6 +23,11 @@ def post_data(connection, user_data):
     cursor.execute("""insert into guest(name) values(%s);""", (user_data['name'],))
     connection.commit()
     cursor.close()
+
+
+@app.route('/ordering_page', methods=['POST'])
+def data():
+    return validate_data(connection, request.form)
 
 
 def validate_data(connection, user_data):
@@ -37,30 +42,44 @@ def validate_data(connection, user_data):
         return render_template('ordering_page.html')
 
 
-@app.route('/ordering_page', methods=['POST'])
-def data():
-    return validate_data(connection, request.form)
-
-
 @app.route('/availability', methods=['POST'])
 def hello():
     table = database_connect()
     items = []
     for row in table:
-        items.append(row[0])
-
-    return render_template("items_display.html", items=items)
+        items.append({"id": row[0], "name": row[1]})
+    return render_template("display_list_of_cold_beverages.html", items=items)
 
 
 def database_connect():
-    try:
         cursor = connection.cursor()
-        cursor.execute("select Available_juices from list_juices")
+        cursor.execute("select id, juice_name from cold_drinks_list ")
         record = cursor.fetchall()
         return record
-    except (Exception, psycopg2.Error) as error:
-        print("Error while connecting to PostgreSQL", error)
 
+
+@app.route('/selected_cold_beverages', methods=['POST'])
+def cold_beverages():
+    table = database_cold_beverages(connection, request.form)
+    items = []
+    for row in table:
+        items.append(row[0])
+    database_cold_beverages(connection, request.form)
+    return render_template("display_selected_cold_beverages.html", items=items)
+
+
+def database_cold_beverages(connection, user_data):
+    cursor = connection.cursor()
+    array = tuple(user_data.keys())
+    query_to_update = "update  cold_drinks_list set selected_juices = 'no'"
+    query = "update cold_drinks_list set selected_juices = 'yes' where id IN %s"
+    display_selected_juices = "select juice_name from cold_drinks_list where selected_juices='yes'"
+    cursor.execute(query_to_update)
+    cursor.execute(query, (array,))
+    connection.commit()
+    cursor.execute(display_selected_juices)
+    record = cursor.fetchall()
+    return record
 
 @app.route('/available_hot_beverages', methods=['POST'])
 def hot_drinks():
@@ -68,35 +87,34 @@ def hot_drinks():
     items = []
     for row in table:
         items.append(row[0])
-
     return render_template("hot_beverages.html", items=items)
 
 
 def connect_database():
-    try:
         cursor = connection.cursor()
-        cursor.execute("select Available_hot_drinks from hot_drinks ")
+        cursor.execute("select hot_drinks_name from hot_drinks_list ")
         record = cursor.fetchall()
         return record
-    except (Exception, psycopg2.Error) as error:
-        print("Error while connecting to PostgreSQL", error)
 
 
-@app.route('/selected_beverages', methods=['POST'])
-def beverages():
-    return render_template('flow.html', shared=request.form)
+@app.route('/selected_hot_drinks', methods=['POST'])
+def hot_beverages():
+    return database_hot_beverages(connection, request.form)
 
 
-def selected_beverages(connection, user_data):
+def database_hot_beverages(connection, user_data):
     cursor = connection.cursor()
-    cursor.execute("select employee_id from cold_beverages where employee_id=%(id)s",
-                   {'id': user_data['numeric']})
+    array = tuple(user_data.keys())
+    query_to_update = "update  hot_drinks_list set selected_juices = 'no'"
+    query = "update hot_drinks_list set selected_juices = 'yes' where hot_drinks_name IN %s"
+    cursor.execute(query_to_update)
+    cursor.execute(query, (array,))
     connection.commit()
     cursor.close()
 
 
 @app.route('/vendor_page', methods=['post'])
-def show():
+def show_vendor_page():
     return render_template('vendor_page.html', shared=request.form)
 
 
