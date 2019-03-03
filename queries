@@ -1,0 +1,27 @@
+Queries:
+  1.Check Employee_id:
+      select employee_id from staff_details where employee_id=200;
+
+  2.For visitors:
+     insert into guest(visitor_name) values(name)
+
+  3.Check Vendor_details:
+     select * from vendor_details where vendor_id=555;
+
+  4.Availability:
+     select juice_name from cold_drinks_list;
+
+  5.Update cold_drinks_list:
+     update  cold_drinks_list set selected_juices = 'no
+     "update cold_drinks_list set selected_juices = 'yes' where juice_name IN %s"
+
+  6.Available hot beverages:
+     select hot_drinks_name from hot_drinks_list;
+
+  7.Update hot_drinks_list:
+     "update  hot_drinks_list set selected_juices = 'no'"
+      "update hot_drinks_list set selected_juices = 'yes' where hot_drinks_name IN %s"
+
+  8.Inner Join query:
+     SELECT cold_beverages.employee_id,cold_beverages.juice_name,cold_beverages.quantity,cold_beverages.date,cold_drinks_list.id,cold_drinks_list.juice_name,cold_drinks_list.cost from cold_beverages INNER JOIN cold_drinks_list ON cold_beverages .juice_name = cold_drinks_list.juice_name;
+
