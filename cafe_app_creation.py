@@ -64,36 +64,37 @@ def cold_beverages():
     items = []
     for row in table:
         items.append(row[0])
-    database_cold_beverages(connection, request.form)
     return render_template('display_selected_cold_beverages.html', items=items)
 
 
 def database_cold_beverages(connection, user_data):
     cursor = connection.cursor()
-    array = tuple(user_data.keys())
-    query_to_update = "insert into cold_beverages(id)  (select id from cold_drinks_list where id  IN (%s))"
-    display_selected_juices = "select juice_name from cold_drinks_list where id =  %s"
-    cursor.execute(query_to_update, array)
+    # array = tuple(user_data.keys())
+    arrays = tuple(user_data.keys())
+    # query_to_update = "insert into cold_beverages(id)   (select id from cold_drinks_list WHERE id IN %s)"
+    display_selected_juices = "select juice_name from cold_drinks_list where id IN %s"
+    # cursor.execute(query_to_update, (array,))
     connection.commit()
-    cursor.execute(display_selected_juices, array)
+    cursor.execute(display_selected_juices, (arrays,))
     record = cursor.fetchall()
     return record
 
 
 @app.route('/selected_juices', methods=['POST'])
 def count_quantity():
-    database_connection_quantity(connection, request.form)
+    database_connect_quantity(connection, request.form)
     return render_template('login_page.html')
 
 
-def database_connection_quantity(connection, user_data):
+
+def database_connect_quantity(connection, user_data):
     cursor = connection.cursor()
-    query_to_update = "update cold_beverages set quantity = %(quantity)s where id = %s"
-    cursor.execute(query_to_update, {'quantity': user_data['value']})
+    array = tuple(user_data.values())
+    query_to_update = "update cold_beverages set quantity = %s"\
+                      " where id IN (SELECT id from cold_drinks_list where id IN %s)"
+    cursor.execute(query_to_update, (array,))
     connection.commit()
     cursor.close()
-
-
 
 
 
