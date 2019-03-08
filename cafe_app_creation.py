@@ -8,21 +8,8 @@ connection = psycopg2.connect("dbname=thoughtworks_cafeteria user=techops")
 
 
 @app.route('/')
-def homes():
+def login_page():
     return render_template('login_page.html')
-
-
-@app.route('/ordering_page', methods=['POST'])
-def get_data():
-    post_data(connection, request.form)
-    return render_template('ordering_page.html')
-
-
-def post_data(connection, user_data):
-    cursor = connection.cursor()
-    cursor.execute("""insert into guest(name) values(%s);""", (user_data['name'],))
-    connection.commit()
-    cursor.close()
 
 
 @app.route('/ordering_page', methods=['POST'])
@@ -33,7 +20,7 @@ def data():
 def validate_data(connection, user_data):
     cursor = connection.cursor()
     cursor.execute("select employee_id from employee_details where employee_id = %(id)s",
-                   {'id': user_data['numeric']})
+                   {'id': user_data['id_value']})
     returned_rows = cursor.fetchall()
     cursor.close()
     if len(returned_rows) == 0:
@@ -60,33 +47,26 @@ def database_connect():
 
 @app.route('/add_to_cart', methods=['POST'])
 def cold_beverages():
-    table = database_cold_beverages(connection, request.form)
-    return render_template('login_page.html', items=table)
+    database_cold_beverages(connection, request.form)
+    return render_template('login_page.html')
 
 
 def database_cold_beverages(connection, user_data):
-    items = user_data.to_dict()
-    a = []
-    b = []
-    # c = []
-    i = 0
-    j = 1
-    index = 0
-    if i != len(items):
-        for row in range(len(items)):
-            a.append(list(items.keys())[i])
-            b.append(list(items.values())[j])
-            # c.append(list(item.values())[0])
+    for id in list(user_data.keys()):
+        quantity = user_data[id]
+        if int(quantity) != 0:
             cursor = connection.cursor()
-            update_details = "insert into cold_beverages_report_generation(id,count) select id,{} from cold_drinks_menu where id='{}'".format(
-                b[index], a[index])
+            update_details = "insert into cold_beverages_report_generation(id,count) select id,{} from cold_drinks_menu where id = {}".format(
+                    quantity, id)
             cursor.execute(update_details)
             connection.commit()
             cursor.close()
-            i += 2
-            j += 2
-            index += 1
-    return update_details
+        else:
+            continue
+
+
+
+
 
 
 @app.route('/available_hot_beverages', methods=['POST'])
@@ -115,23 +95,20 @@ def database_hot_beverages(connection, update_data):
     item = update_data.to_dict()
     a = []
     b = []
-    # c = []
     i = 0
     j = 1
     index = 0
     if i != len(item):
-        for row in range(len(item)):
             a.append(list(item.keys())[i])
             b.append(list(item.values())[j])
-            # c.append(list(item.values())[0])
             cursor = connection.cursor()
             update_details = "insert into hot_beverages_report_generation(id,count) select id,{} from hot_drinks_menu where id='{}'".format(
                 b[index], a[index])
             cursor.execute(update_details)
             connection.commit()
             cursor.close()
-            i += 2
-            j += 2
+            i += 1
+            j += 1
             index += 1
     return update_details
 
@@ -148,10 +125,10 @@ def vendor_details():
 
 @app.route('/report_generation', methods=['POST'])
 def check_info_vendor():
-    return validate_info_vendor(connection, request.form)
+    return validate_vendor_juice_shop_details(connection, request.form)
 
 
-def validate_info_vendor(connection, user_data):
+def validate_vendor_juice_shop_details(connection, user_data):
     cursor = connection.cursor()
     cursor.execute("select vendor_id,password from vendor_juice_world_details where vendor_id=%(id)s AND password=%(password)s",
                    {'id': user_data['id'], 'password': user_data['psw']})
@@ -170,10 +147,10 @@ def vendor_details_cafe():
 
 @app.route('/generate_report', methods=['POST'])
 def check_info_vendor_cafe():
-    return validate_info_vendor_cafe(connection, request.form)
+    return validate_vendor_coffee_shop_details(connection, request.form)
 
 
-def validate_info_vendor_cafe(connection, user_data):
+def validate_vendor_coffee_shop_details(connection, user_data):
     cursor = connection.cursor()
     cursor.execute("select vendor_id,password from vendor_coffee_house_details where vendor_id=%(id)s AND password=%(password)s",
                    {'id': user_data['id'], 'password': user_data['psw']})
