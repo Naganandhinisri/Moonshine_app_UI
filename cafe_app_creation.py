@@ -72,7 +72,7 @@ def database_cold_beverages(connection, user_data):
     i = 0
     j = 1
     index = 0
-    if i != len(juice_value):
+    if i != len(items):
         for row in range(len(items)):
             a.append(list(items.keys())[i])
             b.append(list(items.values())[j])
