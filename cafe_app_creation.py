@@ -26,16 +26,24 @@ def validate_data(connection, user_data):
     if len(returned_rows) == 0:
         return render_template('login_page.html')
     else:
-        return render_template('ordering_page.html')
+        return render_template('ordering_page.html', itemss=user_data['id_value'])
 
 
 @app.route('/availability', methods=['POST'])
 def hello():
-    table = database_connect()
+    return cold_item(connection, request.form)
+
+
+def cold_item(connection, user_data):
+    connection.cursor()
+    array_values = tuple(user_data.values())
+    array_value = array_values[0]
+    rows = database_connect()
     items = []
-    for row in table:
+    for row in rows:
         items.append({"id": row[0], "name": row[1]})
-    return render_template("display_list_of_cold_beverages.html", items=items)
+    return render_template("display_list_of_cold_beverages.html", items=items, itemss=array_value)
+
 
 
 def database_connect():
@@ -52,21 +60,22 @@ def cold_beverages():
 
 
 def database_cold_beverages(connection, user_data):
-    for id in list(user_data.keys()):
+    employee_details = list(user_data.values())
+    employee_index = employee_details[0]
+    employee_details.remove(employee_details[0])
+    item_key = list(user_data.keys())
+    item_key.remove(item_key[0])
+    for id in list(item_key):
         quantity = user_data[id]
         if int(quantity) != 0:
             cursor = connection.cursor()
-            update_details = "insert into cold_beverages_report_generation(id,count) select id,{} from cold_drinks_menu where id = {}".format(
-                    quantity, id)
+            update_details = "insert into cold_beverages_report_generation(id,count,employees_id) select id,{},{} from cold_drinks_menu where id = {}".format(
+                quantity, employee_index, id)
             cursor.execute(update_details)
             connection.commit()
             cursor.close()
         else:
             continue
-
-
-
-
 
 
 @app.route('/available_hot_beverages', methods=['POST'])
