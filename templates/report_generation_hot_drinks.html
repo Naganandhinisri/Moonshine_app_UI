@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>juices</title>
+</head>
+<body>
+<h1 align="center"> REPORT FOR HOT BEVERAGES</h1>
+<table border="2" cellpadding="4" cellspacing="4">
+    {% for row in items %}
+        <tr>
+        {% for item in row %}
+            <td>{{ item" }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
