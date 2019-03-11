@@ -69,7 +69,7 @@ def database_cold_beverages(connection, user_data):
         quantity = user_data[id]
         if int(quantity) != 0:
             cursor = connection.cursor()
-            update_details = "insert into cold_beverages_report_generation(id,count,employees_id) select id,{},{} from cold_drinks_menu where id = {}".format(
+            update_details = "insert into cold_beverages_report_generation(juice_id,count,employees_id) select id,{},{} from cold_drinks_menu where id = {}".format(
                 quantity, employee_index, id)
             cursor.execute(update_details)
             connection.commit()
@@ -79,47 +79,51 @@ def database_cold_beverages(connection, user_data):
 
 
 @app.route('/available_hot_beverages', methods=['POST'])
-def show_hot_drinks():
-    table = hot_drinks_menu()
+def hot_drinks_page():
+    return hot_drinks(connection, request.form)
+
+
+def hot_drinks(connection, user_data):
+    connection.cursor()
+    array_values = tuple(user_data.values())
+    array_value = array_values[0]
+    rows = database_selected_hot_drinks()
     items = []
-    for row in table:
+    for row in rows:
         items.append({"id": row[0], "name": row[1]})
-    return render_template("display_list_of_hot_beverages.html", items=items)
+    return render_template("display_list_of_hot_beverages.html", items=items, itemss=array_value)
 
 
-def hot_drinks_menu():
+def database_selected_hot_drinks():
     cursor = connection.cursor()
     cursor.execute("select id, hot_drinks_name from hot_drinks_menu ")
     record = cursor.fetchall()
     return record
 
 
-@app.route('/quantity_hot_drinks', methods=['POST'])
+@app.route('/hot_drinks_cart', methods=['POST'])
 def hot_beverages():
-    table = database_hot_beverages(connection, request.form)
-    return render_template('login_page.html', items=table)
+    database_hot_beverages(connection, request.form)
+    return render_template('login_page.html')
 
 
-def database_hot_beverages(connection, update_data):
-    item = update_data.to_dict()
-    a = []
-    b = []
-    i = 0
-    j = 1
-    index = 0
-    if i != len(item):
-            a.append(list(item.keys())[i])
-            b.append(list(item.values())[j])
+def database_hot_beverages(connection, user_data):
+    employee_details = list(user_data.values())
+    employee_index = employee_details[0]
+    employee_details.remove(employee_details[0])
+    item_key = list(user_data.keys())
+    item_key.remove(item_key[0])
+    for id in list(item_key):
+        quantity = user_data[id]
+        if int(quantity) != 0:
             cursor = connection.cursor()
-            update_details = "insert into hot_beverages_report_generation(id,count) select id,{} from hot_drinks_menu where id='{}'".format(
-                b[index], a[index])
+            update_details = "insert into hot_beverages_report_generation(id,count,employees_id) select id,{},{} from hot_drinks_menu where id = {}".format(
+                quantity, employee_index, id)
             cursor.execute(update_details)
             connection.commit()
             cursor.close()
-            i += 1
-            j += 1
-            index += 1
-    return update_details
+        else:
+            continue
 
 
 @app.route('/vendor_page', methods=['post'])
@@ -137,8 +141,11 @@ def check_info_vendor():
     return validate_vendor_juice_shop_details(connection, request.form)
 
 
+
 def validate_vendor_juice_shop_details(connection, user_data):
     cursor = connection.cursor()
+    report_table = final_report(connection, request.form)
+    display_table = tuple(report_table)
     cursor.execute("select vendor_id,password from vendor_juice_world_details where vendor_id=%(id)s AND password=%(password)s",
                    {'id': user_data['id'], 'password': user_data['psw']})
     returned_rows = cursor.fetchall()
@@ -146,8 +153,15 @@ def validate_vendor_juice_shop_details(connection, user_data):
     if len(returned_rows) == 0:
         return render_template('vendor_juice_world.html')
     else:
-        return render_template('report_generation_cold_drinks.html')
+        return render_template('report_generation_cold_drinks.html', items=display_table)
 
+
+def final_report(connection,user_data):
+    cursor = connection.cursor()
+    cursor.execute("select order_id,employees_id,juice_id,count,(cold_drinks_menu.cost*cold_beverages_report_generation.count) from cold_beverages_report_generation inner join cold_drinks_menu on cold_drinks_menu.id = cold_beverages_report_generation.juice_id;")
+    report_table = cursor.fetchall()
+    cursor.close()
+    return report_table
 
 @app.route('/vendor_cafe', methods=['post'])
 def vendor_details_cafe():
@@ -161,6 +175,8 @@ def check_info_vendor_cafe():
 
 def validate_vendor_coffee_shop_details(connection, user_data):
     cursor = connection.cursor()
+    report_table = final_report(connection, request.form)
+    display_table = tuple(report_table)
     cursor.execute("select vendor_id,password from vendor_coffee_house_details where vendor_id=%(id)s AND password=%(password)s",
                    {'id': user_data['id'], 'password': user_data['psw']})
     returned_rows = cursor.fetchall()
@@ -168,7 +184,15 @@ def validate_vendor_coffee_shop_details(connection, user_data):
     if len(returned_rows) == 0:
         return render_template('vendor_madras_coffee_house.html')
     else:
-        return render_template('report_generation_hot_drinks.html')
+        return render_template('report_generation_hot_drinks.html', items=display_table)
+
+
+def final_table_hot_drinks(connection,user_data):
+    cursor = connection.cursor()
+    cursor.execute("select order_id,employees_id,hot_drinks_id,count,date(hot_drinks_menu.cost*hot_beverages_report_generation.count) from hot_beverages_report_generation inner join hot_drinks_menu on hot_drinks_menu.id = hot_beverages_report_generation.id;")
+    report_table = cursor.fetchall()
+    cursor.close()
+    return report_table
 
 
 if __name__ == '__main__':
