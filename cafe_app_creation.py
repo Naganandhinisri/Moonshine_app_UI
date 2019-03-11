@@ -36,13 +36,11 @@ def hello():
 
 def cold_item(connection, user_data):
     connection.cursor()
-    array_values = tuple(user_data.values())
-    array_value = array_values[0]
     rows = database_connect()
     items = []
     for row in rows:
         items.append({"id": row[0], "name": row[1]})
-    return render_template("display_list_of_cold_beverages.html", items=items, itemss=array_value)
+    return render_template("display_list_of_cold_beverages.html", items=items)
 
 
 
@@ -60,17 +58,12 @@ def cold_beverages():
 
 
 def database_cold_beverages(connection, user_data):
-    employee_details = list(user_data.values())
-    employee_index = employee_details[0]
-    employee_details.remove(employee_details[0])
-    item_key = list(user_data.keys())
-    item_key.remove(item_key[0])
-    for id in list(item_key):
+    for id in list(user_data.keys()):
         quantity = user_data[id]
         if int(quantity) != 0:
             cursor = connection.cursor()
-            update_details = "insert into cold_beverages_report_generation(juice_id,count,employees_id) select id,{},{} from cold_drinks_menu where id = {}".format(
-                quantity, employee_index, id)
+            update_details = "insert into cold_beverages_report_generation(juice_id,count) select id,{} from cold_drinks_menu where id = {}".format(
+                quantity,  id)
             cursor.execute(update_details)
             connection.commit()
             cursor.close()
@@ -85,13 +78,11 @@ def hot_drinks_page():
 
 def hot_drinks(connection, user_data):
     connection.cursor()
-    array_values = tuple(user_data.values())
-    array_value = array_values[0]
     rows = database_selected_hot_drinks()
     items = []
     for row in rows:
         items.append({"id": row[0], "name": row[1]})
-    return render_template("display_list_of_hot_beverages.html", items=items, itemss=array_value)
+    return render_template("display_list_of_hot_beverages.html", items=items)
 
 
 def database_selected_hot_drinks():
@@ -108,17 +99,12 @@ def hot_beverages():
 
 
 def database_hot_beverages(connection, user_data):
-    employee_details = list(user_data.values())
-    employee_index = employee_details[0]
-    employee_details.remove(employee_details[0])
-    item_key = list(user_data.keys())
-    item_key.remove(item_key[0])
-    for id in list(item_key):
+    for id in list(user_data.keys()):
         quantity = user_data[id]
         if int(quantity) != 0:
             cursor = connection.cursor()
-            update_details = "insert into hot_beverages_report_generation(id,count,employees_id) select id,{},{} from hot_drinks_menu where id = {}".format(
-                quantity, employee_index, id)
+            update_details = "insert into hot_beverages_report_generation(id,count) select id,{} from hot_drinks_menu where id = {}".format(
+                quantity, id)
             cursor.execute(update_details)
             connection.commit()
             cursor.close()
@@ -158,7 +144,7 @@ def validate_vendor_juice_shop_details(connection, user_data):
 
 def final_report(connection,user_data):
     cursor = connection.cursor()
-    cursor.execute("select order_id,employees_id,juice_id,count,(cold_drinks_menu.cost*cold_beverages_report_generation.count) from cold_beverages_report_generation inner join cold_drinks_menu on cold_drinks_menu.id = cold_beverages_report_generation.juice_id;")
+    cursor.execute("select order_id,juice_id,count,date,(cold_drinks_menu.cost*cold_beverages_report_generation.count) from cold_beverages_report_generation inner join cold_drinks_menu on cold_drinks_menu.id = cold_beverages_report_generation.juice_id;")
     report_table = cursor.fetchall()
     cursor.close()
     return report_table
@@ -189,7 +175,7 @@ def validate_vendor_coffee_shop_details(connection, user_data):
 
 def final_table_hot_drinks(connection,user_data):
     cursor = connection.cursor()
-    cursor.execute("select order_id,employees_id,hot_drinks_id,count,date(hot_drinks_menu.cost*hot_beverages_report_generation.count) from hot_beverages_report_generation inner join hot_drinks_menu on hot_drinks_menu.id = hot_beverages_report_generation.id;")
+    cursor.execute("select order_id,hot_drinks_id,count,date,(hot_drinks_menu.cost*hot_beverages_report_generation.count) from hot_beverages_report_generation inner join hot_drinks_menu on hot_drinks_menu.id = hot_beverages_report_generation.id;")
     report_table = cursor.fetchall()
     cursor.close()
     return report_table
